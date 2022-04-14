@@ -1,12 +1,19 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
-    <div class="counter">
-      {{counter}}
+
+    <div class="counder-squared">
+     {{$store.state.counter}}
+     <sup>2</sup> = 
+      {{$store.getters.counterSquared}}
+
     </div>
     <div class="buttons">
-      <button @click="decreaseCounter">-</button>
-      <button @click="increaseCounter">+</button>
+      <button @click="$store.dispatch('decreaseCounter')">-</button>
+      <button @click="$store.dispatch('increaseCounter')">+</button>
+    </div>
+    <div>
+      <input v-model="colorCode" type="text" placeholder="Enter color code">
     </div>
   </div>
 </template>
@@ -16,19 +23,19 @@
 
 export default {
   name: 'HomeView',
-  data(){
-    return {
-      counter: 0
+  computed:{
+    colorCode:{
+      get(){
+        return this.$store.state.colorCode
+      },
+      set(newValue){
+        this.$store.dispatch('setColorCode', newValue)
+      }
     }
   },
-  methods:{
-    increaseCounter(){
-      this.counter++
-    },
-    decreaseCounter(){
-      this.counter--
-    }
-  }
+components:{
+  'counter': require('@/components/Counter.vue').default
+}
 }
 </script>
 
